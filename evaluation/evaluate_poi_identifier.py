@@ -26,6 +26,60 @@ labels, features = targetFeatureSplit(data)
 
 
 
-### your code goes here 
+### your code goes here
+from sklearn.model_selection import train_test_split
+
+features_train,features_test,labels_train,labels_test=train_test_split(
+    features,labels,test_size=0.3,random_state=42)
+
+from sklearn.tree import DecisionTreeClassifier
+
+clf=DecisionTreeClassifier()
+clf.fit(features_train,labels_train)
+print "Accuracy Score ", clf.score(features_test,labels_test)
+
+pred= clf.predict(features_test)
+
+num_pois=0
+
+for preds in pred:
+    if preds==1:
+        num_pois+=1
+
+true_positives = 0
+false_positives = 0
+false_negatives = 0
+
+for preds, actual in zip(pred, labels_test):
+    if preds == actual and actual == 1:
+        true_positives += 1
+    elif preds == 1 and actual == 0:
+        false_positives += 1
+    elif preds == 0 and actual == 1:
+        false_negatives += 1
+
+print "True Positives:", true_positives
+print "False Positives", false_positives
+print "False Negatives", false_negatives
+
+print "\nPrecision (POIs):", true_positives/(true_positives + false_positives)
+print "Recall (POIs)", true_positives/(true_positives + false_negatives)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
